@@ -1,24 +1,29 @@
-import logo from './logo.svg';
+import { useEffect } from 'react';
 import './App.css';
+import Calculator from './components/Calculator';
+import './styles/style.scss';
+import http from './services/utility';
+import { paths } from './utils/path.js';
+
 
 function App() {
+
+  useEffect(() => {
+    registerUser();
+  }, [])
+
+  const registerUser = async () => {
+    if (!localStorage.getItem("app-token")) {
+      await http.get(paths.register).then(res => {
+        localStorage.setItem("app-token", res?.data?.user_token)
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Calculator />
   );
 }
 

@@ -2,27 +2,22 @@ const express = require("express");
 var app = express();
 const cors = require("cors");
 const db = require("./app/models");
-const jwt = require("jsonwebtoken");
-const config = require("./app/config/auth.config.js");
-const User = db.user;
 require("dotenv").config("./.env");
 const PORT = process.env.PORT;
 const bearerToken = require("express-bearer-token");
 
 db.sequelize.sync({ force: false }).then(() => {
-    console.log("re-sync db.");
+    // console.log("re-sync db.");
 });
 
 var corsOptions = {
-    origin: "http://localhost:8081",
+    origin: "http://localhost:3000",
 };
 app.use(cors(corsOptions));
 
 
 // parse requests of content-type - application/json
 app.use(express.json());
-
-app.use(requestLogger);
 
 app.use(
     bearerToken({
